@@ -1,0 +1,407 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Things">
+    <meta name="apple-mobile-web-app-title" content="Things">
+    <meta name="msapplication-starturl" content="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Primary Meta Tags -->
+    <title>Things by Om Preetham</title>
+    <meta name="title" content="Things by Om Preetham">
+    <meta name="description" content="Explore Om Preetham's creative development projects including interactive web experiences, GitHub innovations, and experimental designs. A showcase of modern web development and creative coding.">
+    <meta name="author" content="Om Preetham">
+    <meta name="keywords" content="Om Preetham, web development, creative coding, portfolio, interactive design, developer projects, void space, bitmapit, starfield">
+    <meta name="image" content="logo.jpg">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ompreetham.com/">
+    <meta property="og:title" content="Things by Om Preetham">
+    <meta property="og:description" content="Explore Om Preetham's creative development projects including interactive web experiences, GitHub innovations, and experimental designs.">
+    <meta property="og:image" content="logo.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ompreetham.com/">
+    <meta property="twitter:title" content="Things by Om Preetham">
+    <meta property="twitter:description" content="Explore Om Preetham's creative development projects including interactive web experiences, GitHub innovations, and experimental designs.">
+    <meta property="twitter:image" content="logo.jpg">
+
+    <!-- Theme Color for browsers -->
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/jpg" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #000000;
+            --grid-dot-color: rgba(128, 128, 128, 0.5);
+            --grid-line-color: rgba(128, 128, 128, 0.15);
+            --text-color: rgba(255, 255, 255, 0.7);
+            --text-color-hover: rgba(255, 255, 255, 1);
+            --border-color-hover: rgba(65, 28, 28, 0.15);
+            --bg-hover: rgba(255, 255, 255, 0.05);
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #ffffff;
+                --grid-dot-color: rgba(0, 0, 0, 0.3);
+                --grid-line-color: rgba(0, 0, 0, 0.1);
+                --text-color: rgba(0, 0, 0, 0.7);
+                --text-color-hover: rgba(0, 0, 0, 1);
+                --border-color-hover: rgba(0, 0, 0, 0.15);
+                --bg-hover: rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            transition: background-color 0.3s ease;
+        }
+
+        .space-container {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            perspective: 1000px;
+        }
+
+        .grid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-style: preserve-3d;
+            background-image: 
+                radial-gradient(circle at 0 0, var(--grid-dot-color) 1px, transparent 1px),
+                linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px);
+            background-size: 
+                100px 100px,
+                100px 100px,
+                100px 100px;
+            background-position: 
+                0 0,
+                0 0,
+                0 0;
+            width: 1000vw;
+            height: 1000vh;
+            transform: translate(-50%, -50%);
+            transition: background-image 0.3s ease;
+        }
+
+        .floating-name {
+            position: absolute;
+            font-size: clamp(16px, 4vw, 28px);
+            font-weight: 300;
+            text-transform: lowercase;
+            color: var(--text-color);
+            text-decoration: none;
+            letter-spacing: 2px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+            pointer-events: auto;
+            text-shadow: none;
+            transform-style: preserve-3d;
+            transform: translate3d(0, 0, 10px);
+            padding: clamp(8px, 2vw, 15px);
+            border: 1px solid transparent;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .floating-name.special-link {
+            font-size: clamp(24px, 6vw, 48px);
+            font-style: italic;
+            font-weight: 700;
+            color: var(--text-color-hover);
+            letter-spacing: clamp(2px, 1vw, 4px);
+        }
+
+        .floating-name.special-link:hover {
+            font-weight: 500;
+            letter-spacing: 6px;
+            color: var(--text-color-hover);
+        }
+
+        .floating-name:hover {
+            color: var(--text-color-hover);
+            border: 1px solid var(--border-color-hover);
+            background: var(--bg-hover);
+            letter-spacing: 5px;
+            transform: translate3d(0, 0, 30px);
+            font-weight: 400;
+        }
+
+        .names-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vh;
+            pointer-events: none;
+            z-index: 1;
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 768px) {
+            .floating-name {
+                letter-spacing: 1px;
+            }
+            
+            .floating-name:hover {
+                letter-spacing: 2px;
+                transform: translate3d(0, 0, 20px);
+            }
+
+            .floating-name.special-link:hover {
+                letter-spacing: 3px;
+            }
+
+            .grid {
+                background-size: 
+                    50px 50px,
+                    50px 50px,
+                    50px 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="space-container">
+        <div class="grid" id="grid"></div>
+        <div class="names-container" id="namesContainer"></div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const container = document.querySelector('.space-container');
+        const namesContainer = document.getElementById('namesContainer');
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        // List of names and their corresponding URLs
+        const nameLinks = [
+            { name: 'things by me ^_^', url: window.location.href, isSpecial: true },
+            { name: 'ompreetham', url: 'https://ompreetham.com' },
+            { name: 'Embedded HTML Within SVG Inside an Image in a README', url: 'https://github.com/ompreetham' },
+            { name: 'we', url: 'https://we.ompreetham.com' },
+            { name: 'starfield', url: 'https://starfield.ompreetham.com' },
+            { name: 'bitmapit', url: 'https://bitmapit.ompreetham.com' },
+            { name: 'hush', url: 'https://github.com/ompreetham/hush' },
+            { name: 'void', url: 'https://void.ompreetham.com' },
+            { name: 'bitblock', url: 'https://bitblock.ompreetham.com' }
+        ];
+
+        // Create floating names
+        function createFloatingNames() {
+            const placedLinks = [];
+            
+            // Calculate text dimensions
+            function getTextDimensions(text, isSpecial) {
+                const isMobile = window.innerWidth <= 768;
+                const baseFontSize = isMobile ? 16 : 28;
+                const specialFontSize = isMobile ? 24 : 48;
+                const fontSize = isSpecial ? specialFontSize : baseFontSize;
+                const padding = isMobile ? 8 : 15;
+                const letterSpacing = isMobile ? (isSpecial ? 2 : 1) : (isSpecial ? 4 : 3);
+                const width = (text.length * fontSize * 0.6) + (text.length * letterSpacing) + (padding * 2);
+                const height = fontSize + (padding * 2);
+                return { width, height };
+            }
+
+            // Check if a new position overlaps with existing links
+            function checkOverlap(x, y, width, height) {
+                const margin = 50; // Minimum space between links
+                const rect1 = {
+                    left: x - margin,
+                    right: x + width + margin,
+                    top: y - margin,
+                    bottom: y + height + margin
+                };
+
+                return placedLinks.some(link => {
+                    return !(rect1.left > link.right ||
+                           rect1.right < link.left ||
+                           rect1.top > link.bottom ||
+                           rect1.bottom < link.top);
+                });
+            }
+
+            // Find a valid position for a link
+            function findValidPosition(dimensions, isSpecial) {
+                const isMobile = window.innerWidth <= 768;
+                const padding = isMobile ? (isSpecial ? 100 : 50) : (isSpecial ? 200 : 150);
+                const maxAttempts = 100;
+                let attempts = 0;
+
+                while (attempts < maxAttempts) {
+                    const x = Math.random() * (window.innerWidth - dimensions.width - padding * 2) + padding;
+                    const y = Math.random() * (window.innerHeight - dimensions.height - padding * 2) + padding;
+
+                    if (!checkOverlap(x, y, dimensions.width, dimensions.height)) {
+                        placedLinks.push({
+                            left: x,
+                            right: x + dimensions.width,
+                            top: y,
+                            bottom: y + dimensions.height
+                        });
+                        return { x, y };
+                    }
+                    attempts++;
+                }
+
+                // Fallback position with smaller margins
+                const fallbackMargin = isMobile ? 10 : 20;
+                const x = Math.random() * (window.innerWidth - dimensions.width - padding * 2) + padding;
+                const y = Math.random() * (window.innerHeight - dimensions.height - padding * 2) + padding;
+                placedLinks.push({
+                    left: x,
+                    right: x + dimensions.width,
+                    top: y,
+                    bottom: y + dimensions.height
+                });
+                return { x, y };
+            }
+
+            nameLinks.forEach(({ name, url, isSpecial }) => {
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = isSpecial ? '_self' : '_blank';
+                link.className = `floating-name${isSpecial ? ' special-link' : ''}`;
+                link.textContent = name;
+
+                const dimensions = getTextDimensions(name, isSpecial);
+                const position = findValidPosition(dimensions, isSpecial);
+                
+                // Add slight random rotation for each name
+                const randomRotation = (Math.random() - 0.5) * (isSpecial ? 3 : 5);
+                link.style.transform = `translate3d(0, 0, ${isSpecial ? 20 : 10}px) rotate(${randomRotation}deg)`;
+                
+                link.style.left = `${position.x}px`;
+                link.style.top = `${position.y}px`;
+                
+                namesContainer.appendChild(link);
+            });
+        }
+
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth;
+            mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+            
+            // Calculate target position with increased movement range
+            targetX = mouseX * 400;
+            targetY = mouseY * 400;
+        });
+
+        // Smooth animation loop
+        function animate() {
+            // Smooth interpolation
+            currentX += (targetX - currentX) * 0.05;
+            currentY += (targetY - currentY) * 0.05;
+
+            // Apply transform with perspective effect to grid
+            grid.style.transform = `translate(-50%, -50%) 
+                                  translate3d(${currentX}px, ${currentY}px, 0)
+                                  rotateX(${-mouseY * 3}deg) 
+                                  rotateY(${mouseX * 3}deg)`;
+
+            // Apply similar transform to names container with reduced movement
+            namesContainer.style.transform = `translate(-50%, -50%) 
+                                           translate3d(${currentX * 0.2}px, ${currentY * 0.2}px, 0)
+                                           rotateX(${-mouseY * 2}deg) 
+                                           rotateY(${mouseX * 2}deg)`;
+
+            requestAnimationFrame(animate);
+        }
+
+        // Handle touch devices
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isDragging = false;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isDragging = true;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            
+            const deltaX = (touchX - touchStartX) / window.innerWidth;
+            const deltaY = (touchY - touchStartY) / window.innerHeight;
+            
+            // Reduce movement range on mobile
+            const movementScale = window.innerWidth <= 768 ? 200 : 400;
+            targetX += deltaX * movementScale;
+            targetY += deltaY * movementScale;
+            
+            touchStartX = touchX;
+            touchStartY = touchY;
+            
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // Add resize handler to reposition elements
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                namesContainer.innerHTML = '';
+                createFloatingNames();
+            }, 250);
+        });
+
+        // Initialize
+        createFloatingNames();
+        animate();
+    </script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch((err) => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>

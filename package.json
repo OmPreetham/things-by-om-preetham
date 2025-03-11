@@ -1,0 +1,12 @@
+{
+  "name": "void-2d-space",
+  "version": "1.0.0",
+  "description": "A 2D space visualization",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+} 
