@@ -156,8 +156,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 80vw;
-            height: 80vh;
+            width: 90vw;
+            height: 90vh;
             pointer-events: none;
             z-index: 1;
             transform-style: preserve-3d;
@@ -239,7 +239,7 @@
 
             // Check if a new position overlaps with existing links
             function checkOverlap(x, y, width, height) {
-                const margin = 50; // Minimum space between links
+                const margin = 35; // Minimum space between links (reduced from 50)
                 const rect1 = {
                     left: x - margin,
                     right: x + width + margin,
@@ -258,8 +258,8 @@
             // Find a valid position for a link
             function findValidPosition(dimensions, isSpecial) {
                 const isMobile = window.innerWidth <= 768;
-                const padding = isMobile ? (isSpecial ? 100 : 50) : (isSpecial ? 200 : 150);
-                const maxAttempts = 100;
+                const padding = isMobile ? (isSpecial ? 60 : 30) : (isSpecial ? 120 : 80);
+                const maxAttempts = 120; // Increased from 100
                 let attempts = 0;
 
                 while (attempts < maxAttempts) {
