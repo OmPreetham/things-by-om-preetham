@@ -1,6 +1,6 @@
 {
-  "name": "Things by Om Preetham",
-  "short_name": "Things",
+  "name": "om / things",
+  "short_name": "om/things",
   "description": "Explore Om Preetham's creative development projects including interactive web experiences.",
   "start_url": "/",
   "display": "standalone",
@@ -21,4 +21,4 @@
       "purpose": "any maskable"
     }
   ]
-} 
+}

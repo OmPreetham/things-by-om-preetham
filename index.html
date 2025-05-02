@@ -6,8 +6,8 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="application-name" content="Things" />
-  <meta name="apple-mobile-web-app-title" content="Things" />
+  <meta name="application-name" content="om / things" />
+  <meta name="apple-mobile-web-app-title" content="om / things" />
   <meta name="msapplication-starturl" content="/" />
   <meta
     name="viewport"
@@ -15,8 +15,8 @@
   />
 
   <!-- Primary Meta Tags -->
-  <title>Things by Om Preetham</title>
-  <meta name="title" content="Things by Om Preetham" />
+  <title>om / things</title>
+  <meta name="title" content="om / things" />
   <meta
     name="description"
     content="Explore Om Preetham's creative development projects including interactive web experiences, GitHub innovations, and experimental designs. A showcase of modern web development and creative coding."
@@ -31,7 +31,7 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ompreetham.com/" />
-  <meta property="og:title" content="Things by Om Preetham" />
+  <meta property="og:title" content="om / things" />
   <meta
     property="og:description"
     content="Explore Om Preetham's creative development projects including interactive web experiences, GitHub innovations, and experimental designs."
@@ -41,7 +41,7 @@
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://ompreetham.com/" />
-  <meta property="twitter:title" content="Things by Om Preetham" />
+  <meta property="twitter:title" content="om / things" />
   <meta
     property="twitter:description"
     content="Explore Om Preetham's creative development projects including interactive web experiences, GitHub innovations, and experimental designs."
@@ -226,7 +226,7 @@
 
     // List of names and their corresponding URLs
     const nameLinks = [
-      { name: 'things by me ^_^', url: window.location.href, isSpecial: true },
+      { name: 'om / things', url: window.location.href, isSpecial: true },
       { name: 'logs by om', url: 'https://logs.ompreetham.com' },
       {
         name: 'embedded html within svg inside an image in a readme',
@@ -445,6 +445,17 @@
           .register('/sw.js')
           .then((registration) => {
             console.log('ServiceWorker registration successful')
+
+            // Register periodic sync if supported (for hourly updates)
+            if ('periodicSync' in registration) {
+              registration.periodicSync
+                .register('refresh-cache', {
+                  minInterval: 60 * 60 * 1000, // 1 hour in milliseconds
+                })
+                .catch((err) => {
+                  console.log('Periodic Sync could not be registered: ', err)
+                })
+            }
           })
           .catch((err) => {
             console.log('ServiceWorker registration failed: ', err)
