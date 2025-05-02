@@ -224,6 +224,20 @@
     let currentX = 0
     let currentY = 0
 
+    // Auto-movement variables
+    let isAutoMoving = true
+    let autoMoveX = 0
+    let autoMoveY = 0
+    let autoMoveAngle = 0
+    let userInteractionTimeout
+    const AUTO_MOVE_SPEED = 0.3
+    const INACTIVITY_TIMEOUT = 5000 // 5 seconds of inactivity before auto-movement resumes
+
+    // Check if device is touch-only
+    const isTouchDevice = () => {
+      return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+    }
+
     // List of names and their corresponding URLs
     const nameLinks = [
       { name: 'om / things', url: window.location.href, isSpecial: true },
@@ -356,33 +370,79 @@
 
     // Track mouse position
     document.addEventListener('mousemove', (e) => {
+      // Clear any existing timeout
+      clearTimeout(userInteractionTimeout)
+
+      // Stop auto-movement when mouse is used
+      isAutoMoving = false
+
       mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth
       mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight
 
       // Calculate target position with increased movement range
       targetX = mouseX * 400
       targetY = mouseY * 400
+
+      // Set timeout to resume auto-movement after inactivity
+      userInteractionTimeout = setTimeout(() => {
+        if (isTouchDevice()) {
+          isAutoMoving = true
+        }
+      }, INACTIVITY_TIMEOUT)
     })
+
+    // Handle automatic movement
+    function updateAutoMovement() {
+      if (!isAutoMoving) return
+
+      // Create a gentle circular/wave motion
+      autoMoveAngle += 0.002
+      autoMoveX = Math.sin(autoMoveAngle) * 150
+      autoMoveY = Math.cos(autoMoveAngle * 0.8) * 100
+    }
 
     // Smooth animation loop
     function animate() {
+      // Update auto-movement if active
+      updateAutoMovement()
+
+      // Determine target based on whether auto-moving or user-controlled
+      const targetToUseX = isAutoMoving ? autoMoveX : targetX
+      const targetToUseY = isAutoMoving ? autoMoveY : targetY
+
       // Smooth interpolation
-      currentX += (targetX - currentX) * 0.05
-      currentY += (targetY - currentY) * 0.05
+      currentX += (targetToUseX - currentX) * 0.05
+      currentY += (targetToUseY - currentY) * 0.05
 
       // Apply transform with perspective effect to grid
       grid.style.transform = `translate(-50%, -50%) 
-                                  translate3d(${currentX}px, ${currentY}px, 0)
-                                  rotateX(${-mouseY * 3}deg) 
-                                  rotateY(${mouseX * 3}deg)`
+                              translate3d(${currentX}px, ${currentY}px, 0)
+                              rotateX(${
+                                isAutoMoving
+                                  ? Math.sin(autoMoveAngle * 0.5) * 1
+                                  : -mouseY * 3
+                              }deg) 
+                              rotateY(${
+                                isAutoMoving
+                                  ? Math.cos(autoMoveAngle * 0.3) * 1
+                                  : mouseX * 3
+                              }deg)`
 
       // Apply similar transform to names container with reduced movement
       namesContainer.style.transform = `translate(-50%, -50%) 
-                                           translate3d(${currentX * 0.2}px, ${
+                                       translate3d(${currentX * 0.2}px, ${
         currentY * 0.2
       }px, 0)
-                                           rotateX(${-mouseY * 2}deg) 
-                                           rotateY(${mouseX * 2}deg)`
+                                       rotateX(${
+                                         isAutoMoving
+                                           ? Math.sin(autoMoveAngle * 0.5) * 0.7
+                                           : -mouseY * 2
+                                       }deg) 
+                                       rotateY(${
+                                         isAutoMoving
+                                           ? Math.cos(autoMoveAngle * 0.3) * 0.7
+                                           : mouseX * 2
+                                       }deg)`
 
       requestAnimationFrame(animate)
     }
@@ -393,6 +453,10 @@
     let isDragging = false
 
     document.addEventListener('touchstart', (e) => {
+      // Stop auto-movement when touch interaction begins
+      clearTimeout(userInteractionTimeout)
+      isAutoMoving = false
+
       touchStartX = e.touches[0].clientX
       touchStartY = e.touches[0].clientY
       isDragging = true
@@ -400,6 +464,9 @@
 
     document.addEventListener('touchmove', (e) => {
       if (!isDragging) return
+
+      // Keep auto-movement disabled during touch interaction
+      isAutoMoving = false
 
       const touchX = e.touches[0].clientX
       const touchY = e.touches[0].clientY
@@ -420,6 +487,14 @@
 
     document.addEventListener('touchend', () => {
       isDragging = false
+
+      // Set timeout to resume auto-movement after touch interaction ends
+      clearTimeout(userInteractionTimeout)
+      userInteractionTimeout = setTimeout(() => {
+        if (isTouchDevice()) {
+          isAutoMoving = true
+        }
+      }, INACTIVITY_TIMEOUT)
     })
 
     // Add resize handler to reposition elements
